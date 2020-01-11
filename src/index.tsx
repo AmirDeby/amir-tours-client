@@ -11,6 +11,8 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const logger = createLogger({ collapsed: true });
 const middleware = [thunk, logger];
 
