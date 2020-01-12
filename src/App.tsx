@@ -1,24 +1,25 @@
 import React from 'react';
+import { Route, Switch } from 'react-router';
 import './App.css';
-import { Switch, Route } from 'react-router';
-import { Link } from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar';
-import Register from './Components/Register/Register';
+import { Register } from './Components/Register/Register'
+import { VacationPage } from './Components/VacationPage/VacationPage';
+
 
 
 const App: React.FC = () => {
   return (
     <div className="App">
-     <NavBar />
+      <NavBar />
       <Switch>
         <Route path="/" exact>
           <div>homepage</div>
         </Route>
         <Route path="/register">
-          <Register/>
+          <Register />
         </Route>
-        <Route>
-        
+        <Route path="/vacations">
+          <VacationPage/>
         </Route>
         <Route>
           page not found

@@ -5,11 +5,14 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { registerAction } from '../../actions';
+import { IState } from '../../reducer';
 
 
 export interface IRegisterProps {
-
+    register(firstName: string, lastName: string, password: string, userName: string): void,
 }
 
 interface IRegisterState {
@@ -20,7 +23,7 @@ interface IRegisterState {
 
 }
 
-export default class Register extends React.Component<IRegisterProps, IRegisterState> {
+class _Register extends React.Component<IRegisterProps, IRegisterState> {
     state: IRegisterState = {
         firstName: "",
         lastName: "",
@@ -111,11 +114,13 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
             </div>
         );
     }
+
     onRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const { userName,password,lastName,firstName } = this.state
-        console.log(this.state);
+        const { firstName, lastName, password, userName } = this.state
+        const { register } = this.props;
+        register(firstName, lastName, password, userName)
 
     }
 
@@ -125,3 +130,19 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
         this.setState({ [name]: value } as any)
     }
 }
+
+
+
+const mapStateToProps = (state: IState) => {
+    return {};
+
+}
+
+const mapDispatchToProps = {
+    register: registerAction
+}
+
+export const Register = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(_Register)
