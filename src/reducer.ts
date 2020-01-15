@@ -21,12 +21,22 @@ export enum ActionType {
     RegisterSuccess = "REGISTER_SUCCESS",
     RegisterFail = "REGISTER_FAIL",
     LoginSuccess = "LOGIN_SUCCESS",
+    LoginFail = "LOGIN_FAIL",
     GetVacationsPending = "GET_VACATIONS_PENDING",
     GetVacationsSuccess = "GET_VACATIONS_SUCCESS",
+    LogOut ="LOG_OUT",
+
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
+
+        case ActionType.LogOut: {
+            return {
+                ...state,
+                isLogged:false
+            }
+        }
 
         case ActionType.GetVacationsPending: {
             return {
@@ -46,6 +56,12 @@ export const reducer = (state = initialState, action: IAction): IState => {
                 isLogged: true
             }
         }
+        case ActionType.LoginFail: {
+            return {
+                ...state,
+                
+            }
+            }
         case ActionType.LoginSuccess: {
             return {
                 ...state,

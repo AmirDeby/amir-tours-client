@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import { Link } from 'react-router-dom';
+import { LogOutButton } from '../LogOutButton/LogOutButton';
 
 export interface INavBarProps {
 
@@ -27,7 +28,7 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link><Link to="/">Home</Link></Nav.Link>
                         <Nav.Link><Link to='/vacations'>Vacations</Link></Nav.Link>
                         <NavDropdown title="User Pages" id="basic-nav-dropdown">
                             <NavDropdown.Item><Link to='/register'>Register</Link></NavDropdown.Item>
@@ -37,6 +38,7 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
 
                         </NavDropdown>
                     </Nav>
+                    <LogOutButton/>
                     <Form onSubmit={this.onSearchSubmit} inline>
                         <FormControl onChange={this.onSearchChange} value={this.state.search} type="text" placeholder="Search" className="mr-sm-2" />
                         <Button type="submit" variant="outline-success">Search</Button>

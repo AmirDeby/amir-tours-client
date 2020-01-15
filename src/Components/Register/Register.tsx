@@ -6,13 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { registerAction } from '../../actions';
 import { IState } from '../../reducer';
 
 
 export interface IRegisterProps {
     register(firstName: string, lastName: string, password: string, userName: string): void,
+    isLogged:boolean,
 }
 
 interface IRegisterState {
@@ -31,6 +32,11 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
         userName: "",
     }
     public render() {
+        const { isLogged } = this.props;
+        if (isLogged) {
+            return <Redirect to="/vacations"/>
+        }
+
         return (
             <div>
                 <Container component="main" maxWidth="xs">
@@ -93,6 +99,7 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
                                 </Grid>
                             </Grid>
                             <Button
+                                style={{ marginTop: "13px" }}
                                 type="submit"
                                 fullWidth
                                 variant="contained"
@@ -134,7 +141,9 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
 
 
 const mapStateToProps = (state: IState) => {
-    return {};
+    return {
+        isLogged:state.isLogged
+    };
 
 }
 
