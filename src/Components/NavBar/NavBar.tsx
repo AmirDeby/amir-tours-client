@@ -23,8 +23,8 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
     public render() {
     return (
       <div>
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="#home">Amir's Tours</Navbar.Brand>
+            <Navbar style={{ backgroundColor: "#dae0e5ba"}} >
+                <Navbar.Brand>Amir's Tours</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
@@ -33,9 +33,7 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
                         <NavDropdown title="User Pages" id="basic-nav-dropdown">
                             <NavDropdown.Item><Link to='/register'>Register</Link></NavDropdown.Item>
                             <NavDropdown.Item><Link to='/login'>Login</Link></NavDropdown.Item>
-                            
                             <NavDropdown.Divider />
-
                         </NavDropdown>
                     </Nav>
                     <LogOutButton/>

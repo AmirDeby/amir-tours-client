@@ -25,11 +25,38 @@ export enum ActionType {
     GetVacationsPending = "GET_VACATIONS_PENDING",
     GetVacationsSuccess = "GET_VACATIONS_SUCCESS",
     LogOut ="LOG_OUT",
-
+    Follow = "FOLLOW",
+    UnFollow = "UNFOLLOW"
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
+
+        case ActionType.UnFollow: {
+            
+            const vacationId = action.payload;
+            const updatedVacations = state.vacations.concat();
+            const vacationIndex = updatedVacations.findIndex(vacation => vacation.id === vacationId);
+            updatedVacations[vacationIndex].isFollowed = false;
+
+            return {
+                ...state,
+                vacations:updatedVacations,
+            }
+        }
+
+        case ActionType.Follow: {
+
+            const vacationId = action.payload;
+            const updatedVacations = state.vacations.concat();
+            const vacationIndex = updatedVacations.findIndex(vacation => vacation.id === vacationId);
+            updatedVacations[vacationIndex].isFollowed = true;
+
+            return {
+                ...state,
+                vacations: updatedVacations,
+            }
+        }
 
         case ActionType.LogOut: {
             return {

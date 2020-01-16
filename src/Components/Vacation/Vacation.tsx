@@ -1,31 +1,31 @@
 import * as React from 'react';
 import { IVacation } from '../../Models/vacation.model';
 import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
+import { IState } from '../../reducer';
+import { followAction, unFollowAction } from '../../actions';
+import "./vacation.css"
+
 
 export interface IVacationProps {
-    // vacation: IVacation,
-    id?: number,
-    description: string,
-    destination: string,
-    image: string,
-    startDate: Date,
-    endDate: Date,
-    price: number,
-    isFollowed: boolean
+    vacation: IVacation,
+    vacations: IVacation[],
+    follow?(vacationId: number): void,
+    unFollow?(vacationId: number): void,
+
 }
 
-export default class Vacation extends React.Component<IVacationProps> {
+class _Vacation extends React.Component<IVacationProps> {
     public render() {
-        // const { vacation } = this.props
-        // const { image, destination, description, startDate, endDate, price, isFollowed} = vacation
-        const { description, destination, endDate, image, isFollowed, price, startDate } = this.props
+        const { description, destination, endDate, image, isFollowed, price, startDate } = this.props.vacation;
         return (
             <div>
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={image} />
+                <Card className="main-div">
+                    <Card.Img variant="top" src={image} style={{width:"18rem", height:"200px"}} />
                     <Card.Body>
                         <Card.Title>{destination}</Card.Title>
-                        <Card.Text>
+                        <Card.Text className="description-div">
                             {description}
                         </Card.Text>
                         <Card.Text>
@@ -35,10 +35,10 @@ export default class Vacation extends React.Component<IVacationProps> {
                             {endDate}
                         </Card.Text>
                         <Card.Text>
-                            {`$  ${price}`}
+                            <Button variant="outline-success"> {`Oreder $ ${price}`}</Button>
                         </Card.Text>
                         <Card.Text>
-                            {isFollowed}
+                            <Button variant="outline-dark" type="button" onClick={this.onClickHandler} >{isFollowed ? 'followed' : 'not followed'}</Button>
                         </Card.Text>
 
                     </Card.Body>
@@ -46,4 +46,32 @@ export default class Vacation extends React.Component<IVacationProps> {
             </div>
         );
     }
+
+    onClickHandler = () => {
+        const { isFollowed, id } = this.props.vacation;
+        const { unFollow, follow } = this.props;
+        console.log(isFollowed);
+        console.log(id);
+
+
+        if (!isFollowed) {
+            follow(id)
+        } else {
+            unFollow(id)
+        }
+    }
 }
+
+const mapStateToProps = (state: IState) => ({
+    vacations: state.vacations
+})
+
+const mapDispatchToProps = {
+    follow: followAction,
+    unFollow: unFollowAction
+}
+
+export const Vacation = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(_Vacation)

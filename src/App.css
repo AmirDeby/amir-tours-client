@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-image: url('/public/Ma2.jpg');
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 .App-logo {

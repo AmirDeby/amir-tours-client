@@ -3,7 +3,25 @@ import axios from 'axios';
 import { IAction, ActionType } from './reducer';
 import { setToken } from '.';
 
+export const followAction = (vacationId: number) => {
+    return async (dispatch: Dispatch<IAction>) => {
+        await axios.post(`http://localhost:5000/vacations/${vacationId}/follow`);
+        dispatch({
+            type: ActionType.Follow,
+            payload: vacationId
+        })
+    }
+}
 
+export const unFollowAction = (vacationId: number) => {
+    return async (dispatch: Dispatch<IAction>) => {
+        await axios.post(`http://localhost:5000/vacations/${vacationId}/unfollow`);
+        dispatch({
+            type: ActionType.UnFollow,
+            payload: vacationId
+        })
+    }
+}
 
 
 export const registerAction = (firstName: string, lastName: string, password: string, userName: string) => {
@@ -51,6 +69,6 @@ export const logOutAction = (): IAction => {
     localStorage.removeItem('token');
     return {
         type: ActionType.LogOut,
-        payload:{}
+        payload: {}
     }
 }
