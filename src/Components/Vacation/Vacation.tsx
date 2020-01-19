@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { IState } from '../../reducer';
 import { followAction, unFollowAction } from '../../actions';
-import "./vacation.css"
+import "./vacation.css";
 
 
 export interface IVacationProps {

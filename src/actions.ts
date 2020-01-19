@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IAction, ActionType } from './reducer';
 import { setToken } from '.';
 
+
 export const followAction = (vacationId: number) => {
     return async (dispatch: Dispatch<IAction>) => {
         await axios.post(`http://localhost:5000/vacations/${vacationId}/follow`);
@@ -41,11 +42,14 @@ export const registerAction = (firstName: string, lastName: string, password: st
 export const logInAction = (userName: string, password: string) => {
     return async (dispatch: Dispatch<IAction>) => {
         const { data } = await axios.post('http://localhost:5000/auth/login', { userName, password });
+        console.log(data);
         dispatch({
             type: ActionType.LoginSuccess,
             payload: {}
         });
         const { token } = data
+        
+        
         setToken(token);
     }
 }
@@ -64,6 +68,19 @@ export const getMyVacationsAction = () => {
     }
 }
 
+export const getUsersAction = () => {
+    return async (dispatch: Dispatch<IAction>) => {
+       
+        const { data } = await axios.get('http://localhost:5000/users');
+
+        dispatch({
+            type: ActionType.GetUsers,
+            payload: data
+        })
+        console.log(data);
+        
+    }
+}
 
 export const logOutAction = (): IAction => {
     localStorage.removeItem('token');

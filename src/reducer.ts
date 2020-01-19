@@ -1,8 +1,10 @@
 import { IVacation } from "./Models/vacation.model";
+import { IUsers } from "./Models/users.model";
 
 export interface IState {
     isLogged: boolean,
     vacations: IVacation[],
+    users:IUsers[],
 }
 
 export interface IAction {
@@ -15,6 +17,7 @@ export interface IAction {
 const initialState: IState = {
     isLogged: false,
     vacations: [],
+    users:[]
 };
 
 export enum ActionType {
@@ -26,11 +29,19 @@ export enum ActionType {
     GetVacationsSuccess = "GET_VACATIONS_SUCCESS",
     LogOut ="LOG_OUT",
     Follow = "FOLLOW",
-    UnFollow = "UNFOLLOW"
+    UnFollow = "UNFOLLOW",
+    GetUsers = "GET_USERS",
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
+
+        case ActionType.GetUsers: {
+            return {
+                ...state,
+                users: action.payload
+            }
+        }
 
         case ActionType.UnFollow: {
             

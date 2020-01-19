@@ -35,6 +35,11 @@ export default class NavBar extends React.Component<INavBarProps, INavBarState> 
                             <NavDropdown.Item><Link to='/login'>Login</Link></NavDropdown.Item>
                             <NavDropdown.Divider />
                         </NavDropdown>
+                        <NavDropdown title="Admin Pages" id="basic-nav-dropdown">
+                            <NavDropdown.Item><Link to='/addVacation'>AddVacation</Link></NavDropdown.Item>
+                            
+                            <NavDropdown.Divider />
+                        </NavDropdown>
                     </Nav>
                     <LogOutButton/>
                     <Form onSubmit={this.onSearchSubmit} inline>
