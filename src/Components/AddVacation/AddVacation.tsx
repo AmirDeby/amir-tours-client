@@ -1,21 +1,19 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import "./AddVacation.css";
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+import { connect } from 'react-redux';
+import { addVacationAction } from '../../actions';
 import { IState } from '../../reducer';
-import { getUsersAction } from '../../actions';
-import { IUsers } from '../../Models/users.model';
-import { userInfo } from 'os';
+import "./AddVacation.css";
 
 
 export interface IAddVacationProps {
-    // getUsers(): void,
-    // users?:IUsers[],
+    
+    addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): void,
 }
 
 interface IAddVacationState {
@@ -42,12 +40,14 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     componentDidMount() {
-        // const { getUsers } = this.props
-        // getUsers()
+
     }
 
     public render() {
-                
+
+        // if (loggedUser === 0) {
+        //     return <Redirect to="/vacations" />
+        // }
         return (
             <div className="container row">
 
@@ -95,21 +95,22 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
     onSubmit = async (e: React.FormEvent) => {
         const { description, destination, image, startDate, endDate, price } = this.state;
-
+        const { addVacation } = this.props
         e.preventDefault()
-        
+
+        addVacation(description, destination, image, startDate, endDate, price)
 
     }
 }
 
 const mapStateToProps = (state: IState) => {
     return {
-        // users:state.users
+       
     }
 }
 
 const mapDispatchToProps = {
-    // getUsers: getUsersAction
+    addVacation: addVacationAction
 }
 
 export const AddVacation = connect(

@@ -28,7 +28,7 @@ class _VacationPage extends React.Component<IVacationPageProps> {
         return (
             <div style={{ margin: "13px" }} className="row">
                 {vacations.map((vacation) =>
-                    <div className="col-8 col-md-4">
+                    <div key={vacation.id} className="col-8 col-md-4">
                         <Vacation vacation={vacation} />
                     </div>)}
             </div>

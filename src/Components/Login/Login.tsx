@@ -14,7 +14,8 @@ import { logInAction } from '../../actions';
 
 export interface ILoginProps {
     isLogged: boolean,
-    login(userName: string, password: string): void
+    login(userName: string, password: string): void,
+    
 }
 
 interface ILoginState {
@@ -30,10 +31,7 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
 
     public render() {
         const { isLogged } = this.props;
-        if (isLogged) {
-            return <Redirect to="/vacations" />
-        }
-
+        if (isLogged) return <Redirect to="/vacations" />
         return (
             <div>
                 <Container component="main" maxWidth="xs">
@@ -114,10 +112,12 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
 
 const mapStateToProps = (state: IState) => ({
     isLogged: state.isLogged,
+
 })
 
 const mapDispatchToProps = {
-    login: logInAction
+    login: logInAction,
+    
 }
 
 export const Login = connect(

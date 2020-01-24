@@ -1,10 +1,10 @@
 import { IVacation } from "./Models/vacation.model";
-import { IUsers } from "./Models/users.model";
 
 export interface IState {
     isLogged: boolean,
     vacations: IVacation[],
-    users:IUsers[],
+    // loggedUser: ILoggedUser,
+    userDetails:any
 }
 
 export interface IAction {
@@ -17,7 +17,7 @@ export interface IAction {
 const initialState: IState = {
     isLogged: false,
     vacations: [],
-    users:[]
+    userDetails: {message:"",userName:"",isAdmin:0}
 };
 
 export enum ActionType {
@@ -27,24 +27,24 @@ export enum ActionType {
     LoginFail = "LOGIN_FAIL",
     GetVacationsPending = "GET_VACATIONS_PENDING",
     GetVacationsSuccess = "GET_VACATIONS_SUCCESS",
-    LogOut ="LOG_OUT",
+    LogOut = "LOG_OUT",
     Follow = "FOLLOW",
     UnFollow = "UNFOLLOW",
-    GetUsers = "GET_USERS",
+    AddVacation = "ADD_VACATION",
+    
+
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
 
-        case ActionType.GetUsers: {
+        case ActionType.AddVacation: {
             return {
                 ...state,
-                users: action.payload
             }
         }
-
         case ActionType.UnFollow: {
-            
+
             const vacationId = action.payload;
             const updatedVacations = state.vacations.concat();
             const vacationIndex = updatedVacations.findIndex(vacation => vacation.id === vacationId);
@@ -52,7 +52,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
 
             return {
                 ...state,
-                vacations:updatedVacations,
+                vacations: updatedVacations,
             }
         }
 
@@ -72,7 +72,8 @@ export const reducer = (state = initialState, action: IAction): IState => {
         case ActionType.LogOut: {
             return {
                 ...state,
-                isLogged:false
+                isLogged: false,
+                userDetails: { message: "", userName: "", isAdmin: 0 }
             }
         }
 
@@ -91,19 +92,20 @@ export const reducer = (state = initialState, action: IAction): IState => {
         case ActionType.RegisterSuccess: {
             return {
                 ...state,
-                isLogged: true
+                isLogged: true,
+                userDetails: action.payload
             }
         }
         case ActionType.LoginFail: {
             return {
                 ...state,
-                
             }
-            }
+        }
         case ActionType.LoginSuccess: {
             return {
                 ...state,
-                isLogged: true
+                isLogged: true,
+                userDetails:action.payload
             }
         }
         default: {

@@ -50,9 +50,6 @@ class _Vacation extends React.Component<IVacationProps> {
     onClickHandler = () => {
         const { isFollowed, id } = this.props.vacation;
         const { unFollow, follow } = this.props;
-        console.log(isFollowed);
-        console.log(id);
-
 
         if (!isFollowed) {
             follow(id)
