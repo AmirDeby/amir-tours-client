@@ -3,29 +3,36 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { getUserDetailsAction } from './actions';
 import './App.css';
-import { AddVacation } from './Components/AddVacation/AddVacation';
-import { Login } from './Components/Login/Login';
+import { AddVacation } from './Pages/AddVacation/AddVacation';
+import { FollowBar } from './Pages/FollowBar/FollowBar';
+import { Login } from './Pages/Login/Login';
 import { NavBar } from './Components/NavBar/NavBar';
-import { Register } from './Components/Register/Register';
-import { VacationPage } from './Components/VacationPage/VacationPage';
+import { Register } from './Pages/Register/Register';
+import { VacationPage } from './Pages/VacationPage/VacationPage';
 import { IState } from './reducer';
+import { AdminVacationPage } from './Pages/AdminVacationPage/AdminVacationPage';
+import { IUserDetails } from './Models/userDetails.model';
 
 // export default class NavBar extends React.Component<INavBarProps, INavBarState> {
 export interface IAppProps {
-  getUser(): void ,
+  getUser(): void,
+  user: IUserDetails
 }
+
 
 class _App extends React.Component<IAppProps> {
 
   componentDidMount() {
-    const {getUser} = this.props
+    const { getUser } = this.props
     const token = localStorage.getItem('token');
     if (token) {
       getUser()
-    } 
+    }
   }
 
   public render() {
+    const { isAdmin } = this.props.user
+
     return (
       <div className="App">
         <NavBar />
@@ -40,7 +47,10 @@ class _App extends React.Component<IAppProps> {
             <Register />
           </Route>
           <Route path="/vacations">
-            <VacationPage />
+            {isAdmin ? <AdminVacationPage />  : <VacationPage /> }
+          </Route>
+          <Route path="/followbar">
+            <FollowBar />
           </Route>
           <Route>
             <AddVacation />
@@ -56,11 +66,11 @@ class _App extends React.Component<IAppProps> {
 
 const mapStateToProps = (state: IState) => {
   return {
-
+    user: state.userDetails
   }
 }
 const mapDispatchToProps = {
-  getUser : getUserDetailsAction
+  getUser: getUserDetailsAction
 }
 
 export const App = connect(

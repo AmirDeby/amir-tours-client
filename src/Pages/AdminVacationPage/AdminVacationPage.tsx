@@ -1,22 +1,22 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getMyVacationsAction } from '../../actions';
-import { IState } from '../../reducer';
-import { IVacation } from '../../Models/vacation.model';
-import { Vacation } from '../Vacation/Vacation';
 import { Redirect } from 'react-router';
+import { getMyVacationsAction } from '../../actions';
+import { EditVacation } from '../../Components/EditVacation/EditVacation';
+import { IVacation } from '../../Models/vacation.model';
+import { IState } from '../../reducer';
 
-export interface IVacationPageProps {
+export interface IAdminVacationPageProps {
     getVacations(): void,
     vacations: IVacation[],
     isLogged: boolean,
 }
 
-class _VacationPage extends React.Component<IVacationPageProps> {
+class _AdminVacationPage extends React.Component<IAdminVacationPageProps> {
 
     componentDidMount() {
         const { getVacations } = this.props;
-        getVacations();
+        getVacations()
     }
 
     public render() {
@@ -29,7 +29,7 @@ class _VacationPage extends React.Component<IVacationPageProps> {
             <div style={{ margin: "13px" }} className="row">
                 {vacations.map((vacation) =>
                     <div key={vacation.id} className="col-8 col-md-4">
-                        <Vacation vacation={vacation} />
+                        <EditVacation vacation={vacation} />
                     </div>)}
             </div>
         )
@@ -44,11 +44,12 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapDispatchToProps = {
-    getVacations: getMyVacationsAction
+    getVacations: getMyVacationsAction,
+    
 }
 
 
-export const VacationPage = connect(
+export const AdminVacationPage = connect(
     mapStateToProps,
     mapDispatchToProps
-)(_VacationPage)
+)(_AdminVacationPage)

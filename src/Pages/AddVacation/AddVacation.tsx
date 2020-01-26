@@ -44,10 +44,6 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     public render() {
-
-        // if (loggedUser === 0) {
-        //     return <Redirect to="/vacations" />
-        // }
         return (
             <div className="container row">
 

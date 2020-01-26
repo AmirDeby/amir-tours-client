@@ -1,10 +1,10 @@
 import { IVacation } from "./Models/vacation.model";
+import { IUserDetails } from "./Models/userDetails.model";
 
 export interface IState {
     isLogged: boolean,
     vacations: IVacation[],
-    // loggedUser: ILoggedUser,
-    userDetails:any
+    userDetails: IUserDetails,
 }
 
 export interface IAction {
@@ -17,7 +17,7 @@ export interface IAction {
 const initialState: IState = {
     isLogged: false,
     vacations: [],
-    userDetails: {message:"",userName:"",isAdmin:0}
+    userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
 };
 
 export enum ActionType {
@@ -31,12 +31,19 @@ export enum ActionType {
     Follow = "FOLLOW",
     UnFollow = "UNFOLLOW",
     AddVacation = "ADD_VACATION",
-    
+    DeleteVacation = "DELETE_VACATION"
+
 
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
+
+        case ActionType.DeleteVacation: {
+            return {
+                ...state
+            }
+        }
 
         case ActionType.AddVacation: {
             return {
@@ -48,7 +55,12 @@ export const reducer = (state = initialState, action: IAction): IState => {
             const vacationId = action.payload;
             const updatedVacations = state.vacations.concat();
             const vacationIndex = updatedVacations.findIndex(vacation => vacation.id === vacationId);
-            updatedVacations[vacationIndex].isFollowed = false;
+            const currentVacation = updatedVacations[vacationIndex];
+            updatedVacations[vacationIndex] = {
+                ...currentVacation,
+                isFollowed: false,
+                numOfFollowers: currentVacation.numOfFollowers -1 
+            };
 
             return {
                 ...state,
@@ -61,8 +73,12 @@ export const reducer = (state = initialState, action: IAction): IState => {
             const vacationId = action.payload;
             const updatedVacations = state.vacations.concat();
             const vacationIndex = updatedVacations.findIndex(vacation => vacation.id === vacationId);
-            updatedVacations[vacationIndex].isFollowed = true;
-
+            const currentVacation = updatedVacations[vacationIndex];
+            updatedVacations[vacationIndex] = {
+                ...currentVacation,
+                isFollowed: true,
+                numOfFollowers: currentVacation.numOfFollowers + 1
+            };
             return {
                 ...state,
                 vacations: updatedVacations,
@@ -73,7 +89,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
             return {
                 ...state,
                 isLogged: false,
-                userDetails: { message: "", userName: "", isAdmin: 0 }
+                userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
             }
         }
 
@@ -105,7 +121,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
             return {
                 ...state,
                 isLogged: true,
-                userDetails:action.payload
+                userDetails: action.payload
             }
         }
         default: {

@@ -6,5 +6,6 @@ export interface IVacation {
     startDate:Date,
     endDate: Date,
     price: number,
-    isFollowed: boolean
+    isFollowed: boolean,
+    numOfFollowers: number
 }

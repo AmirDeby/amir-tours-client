@@ -1,0 +1,15 @@
+.edit-vacation { 
+  margin: 8px;
+    height: 497px;
+    width: 18rem
+}
+
+.edit-vacation .description-div{
+    overflow: auto;
+    height: 90px;
+}
+
+.edit-vacation .img-size {
+   width: auto;
+    height: 193px;
+}

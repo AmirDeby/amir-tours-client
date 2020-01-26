@@ -3,10 +3,28 @@
     height: 90px;
 }
 .main-div{
-    height: 550px;
+  margin: 8px;
+    height: 590px;
     width: 18rem
 }
 
+.img-size {
+   width: auto;
+    height: 193px;
+}
+
 button:hover {
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 12px 16px 0 rgba(194, 19, 19, 0.24), 0 17px 10px 0 rgba(204, 30, 30, 0.19);
+}
+
+
+.heart {
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/heart.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  height: 30px;
+  width: 30px;
+  top: 10px;
 }

@@ -1,16 +1,14 @@
+import moment from 'moment';
 import * as React from 'react';
-import { IVacation } from '../../Models/vacation.model';
-import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import { connect } from 'react-redux';
-import { IState } from '../../reducer';
 import { followAction, unFollowAction } from '../../actions';
+import { IVacation } from '../../Models/vacation.model';
 import "./vacation.css";
-
 
 export interface IVacationProps {
     vacation: IVacation,
-    vacations: IVacation[],
     follow?(vacationId: number): void,
     unFollow?(vacationId: number): void,
 
@@ -18,29 +16,32 @@ export interface IVacationProps {
 
 class _Vacation extends React.Component<IVacationProps> {
     public render() {
-        const { description, destination, endDate, image, isFollowed, price, startDate } = this.props.vacation;
+        const { description, destination, endDate, image, isFollowed, price, startDate, numOfFollowers } = this.props.vacation;
+        
         return (
             <div>
                 <Card className="main-div">
-                    <Card.Img variant="top" src={image} style={{width:"18rem", height:"200px"}} />
+                    <Card.Img variant="top" src={image} className="img-size" />
                     <Card.Body>
                         <Card.Title>{destination}</Card.Title>
                         <Card.Text className="description-div">
                             {description}
                         </Card.Text>
                         <Card.Text>
-                            {startDate}
+                            {moment(startDate).format('DD-MM-YYYY')}
                         </Card.Text>
                         <Card.Text>
-                            {endDate}
+                            {moment(endDate).format('DD-MM-YYYY')}
                         </Card.Text>
                         <Card.Text>
-                            <Button variant="outline-success"> {`Oreder $ ${price}`}</Button>
+                            <Button variant="outline-success"> {`Order $ ${price}`}</Button>
                         </Card.Text>
                         <Card.Text>
-                            <Button variant="outline-dark" type="button" onClick={this.onClickHandler} >{isFollowed ? 'followed' : 'not followed'}</Button>
+                            <Button variant="outline-dark" type="button" onClick={this.onClickHandler}>
+                                {isFollowed ? 'followed' : 'not followed'}
+                            </Button>
                         </Card.Text>
-
+                        <p className="heart">{numOfFollowers}</p>
                     </Card.Body>
                 </Card>
             </div>
@@ -59,16 +60,12 @@ class _Vacation extends React.Component<IVacationProps> {
     }
 }
 
-const mapStateToProps = (state: IState) => ({
-    vacations: state.vacations
-})
-
 const mapDispatchToProps = {
     follow: followAction,
     unFollow: unFollowAction
 }
 
 export const Vacation = connect(
-    mapStateToProps,
+    undefined,
     mapDispatchToProps
 )(_Vacation)
