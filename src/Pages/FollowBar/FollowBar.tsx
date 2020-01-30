@@ -6,9 +6,11 @@ import { schemeCategory10 } from 'd3-scale-chromatic';
 import { connect } from 'react-redux';
 import { IState } from '../../reducer';
 import { IVacation } from '../../Models/vacation.model';
+import { Redirect } from 'react-router';
 
 export interface IFollowBarProps {
     vacations: IVacation[],
+    isLogged:boolean,
 }
 
 const colors = scaleOrdinal(schemeCategory10).range();
@@ -56,25 +58,27 @@ TriangleBar.propTypes = {
 };
 
 class _FollowBar extends PureComponent<IFollowBarProps> {
-    
+
     static jsfiddleUrl = 'https://jsfiddle.net/alidingling/rnywhbu8/';
 
     render() {
-        const { vacations } = this.props
-       
+        const { vacations, isLogged } = this.props;
+        if (!isLogged) {
+            return <Redirect to="login"/>
+        }
         return (
-            <BarChart style={{margin:"auto"}}
+            <BarChart style={{ margin: " 10px auto" }}
                 width={850}
                 height={370}
-                data={data}
+                data={vacations}
                 margin={{
-                    top: 20, right: 30, left: 20, bottom: 5,
+                    top: 30, right: 30, left: 20, bottom: 5,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="destination" />
                 <YAxis />
-                <Bar dataKey="followers" fill="#8884d8" shape={<TriangleBar />} label={{ position: 'top' }}>
+                <Bar dataKey="numOfFollowers" fill="#8884d8" shape={<TriangleBar />} label={{ position: 'top' }}>
                     {
                         data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={colors[index % 20]} />
@@ -88,7 +92,8 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
 
 const mapStateToProps = (state: IState) => {
     return {
-        vacations: state.vacations
+        vacations: state.vacations,
+        isLogged:state.isLogged
     }
 }
 const mapDispatchToProps = {

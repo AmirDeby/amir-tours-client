@@ -6,11 +6,19 @@ import { IVacation } from './Models/vacation.model';
 
 export const getUserDetailsAction = () => {
     return async (dispatch: Dispatch<IAction>) => {
-        const { data } = await ApiClient.get().get('http://localhost:5000/users/me');
-        dispatch({
-            type: ActionType.LoginSuccess,
-            payload: data
-        })
+        try {
+            const { data } = await ApiClient.get().get('http://localhost:5000/users/me');
+            dispatch({
+                type: ActionType.LoginSuccess,
+                payload: data
+            })
+        }
+        catch (e) {
+            dispatch({
+                type: ActionType.LoginFail,
+                payload: e.message
+            })
+        }
     }
 }
 
@@ -37,52 +45,80 @@ export const unFollowAction = (vacationId: number) => {
 export const addVacationAction = (description: string, destination: string, image: string,
     startDate: string, endDate: string, price: number) => {
     return async (dispatch: Dispatch<IAction>) => {
-        await ApiClient.get().post('http://localhost:5000/vacations', {
-            description, destination, image, startDate, endDate, price
-        })
-        dispatch({
-            type: ActionType.AddVacation,
-            payload: {}
-        })
+        try {
+            await ApiClient.get().post('http://localhost:5000/vacations', {
+                description, destination, image, startDate, endDate, price
+            })
+            dispatch({
+                type: ActionType.AddVacation,
+                payload: {}
+            })
+            return true
+        }
+        catch (e) {
+            dispatch({
+                type: ActionType.AddVacationFail,
+                payload: e.message
+            })
+        }
     }
 }
+
 
 export const deletaVacationAction = (id: number) => {
     return async (dispatch: Dispatch<IAction>) => {
-        await ApiClient.get().post('http://localhost:5000/vacations/delete', { id });
+        const { data } = await ApiClient.get().delete(`http://localhost:5000/vacations/${id}`);
         dispatch({
             type: ActionType.DeleteVacation,
-            payload:{}
+            // payload:{id}
+            payload: data
         })
     }
 }
-    
+
 export const registerAction = (firstName: string, lastName: string, password: string, userName: string) => {
     return async (dispatch: Dispatch<IAction>) => {
-        const response = await ApiClient.get().post('http://localhost:5000/auth/register', {
-            firstName, lastName, password, userName
-        });
-        dispatch({
-            type: ActionType.RegisterSuccess,
-            payload: response.data
-        });
-        const { token } = response.data;
+        try {
+            const response = await ApiClient.get().post('http://localhost:5000/auth/register', {
+                firstName, lastName, password, userName
+            });
+            dispatch({
+                type: ActionType.RegisterSuccess,
+                payload: response.data
+            });
+            const { token } = response.data;
 
-        setToken(token);
+            setToken(token);
+        }
+        catch (e) {
+            dispatch({
+                type: ActionType.RegisterFail,
+                payload: e.message
+            })
+        }
     }
 }
+
 
 export const logInAction = (userName: string, password: string) => {
 
     return async (dispatch: Dispatch<IAction>) => {
-        const { data } = await ApiClient.get().post('http://localhost:5000/auth/login', { userName, password });
-        const { token } = data
-        setToken(token);
-        dispatch({
-            type: ActionType.LoginSuccess,
-            payload: data
-        });
+        try {
+            const { data } = await ApiClient.get().post('http://localhost:5000/auth/login', { userName, password });
+            const { token } = data
+            setToken(token);
 
+            dispatch({
+                type: ActionType.LoginSuccess,
+                payload: data
+            });
+        }
+        catch (e) {
+            dispatch({
+                type: ActionType.LoginFail,
+                payload: e.message
+            })
+        }
     }
 }
 
@@ -93,14 +129,14 @@ export const getMyVacationsAction = () => {
             payload: {}
         });
         const { data: vacations } = await ApiClient.get().get('http://localhost:5000/vacations/me');
-        
+
         vacations.sort(sortByIsFollowed);
-        
+
         dispatch({
             type: ActionType.GetVacationsSuccess,
             payload: vacations,
         });
-       
+
     }
 }
 

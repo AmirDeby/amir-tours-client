@@ -41,7 +41,7 @@ class _Vacation extends React.Component<IVacationProps> {
                                 {isFollowed ? 'followed' : 'not followed'}
                             </Button>
                         </Card.Text>
-                        <p className="heart">{numOfFollowers}</p>
+                        <p className="heart followers" ><div className="follower">{numOfFollowers}</div></p>
                     </Card.Body>
                 </Card>
             </div>

@@ -41,7 +41,6 @@ class _EditVacation extends React.Component<IEditVacationProps> {
         const { id } = this.props.vacation;
         const {deleteVacation} = this.props;
         
-        
         deleteVacation(id)
         
     }

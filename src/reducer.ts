@@ -1,8 +1,10 @@
 import { IVacation } from "./Models/vacation.model";
 import { IUserDetails } from "./Models/userDetails.model";
+import { Vacation } from "./Components/Vacation/Vacation";
 
 export interface IState {
     isLogged: boolean,
+    addVacationSuccess:boolean,
     vacations: IVacation[],
     userDetails: IUserDetails,
 }
@@ -16,6 +18,7 @@ export interface IAction {
 
 const initialState: IState = {
     isLogged: false,
+    addVacationSuccess:false,
     vacations: [],
     userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
 };
@@ -31,6 +34,7 @@ export enum ActionType {
     Follow = "FOLLOW",
     UnFollow = "UNFOLLOW",
     AddVacation = "ADD_VACATION",
+    AddVacationFail = "ADD_VACATION_FAIL",
     DeleteVacation = "DELETE_VACATION"
 
 
@@ -39,15 +43,32 @@ export enum ActionType {
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
 
-        case ActionType.DeleteVacation: {
+        case ActionType.AddVacationFail: {
             return {
-                ...state
+                ...state,
+            }
+        }
+
+        case ActionType.DeleteVacation: {
+
+            // const id = action.payload;
+            // const duplacateVacations = state.vacations.concat();
+            // // const vacationsIndex = duplacateVacations.findIndex(vacation => vacation.id === id);
+            // // const currentVacation = duplacateVacations.splice(vacationsIndex,1)
+            // console.log(duplacateVacations);
+            // console.log(id);
+            // // console.log(currentVacation);
+            // console.log(currentVacation);
+            return {
+                ...state,
+                vacations: action.payload
             }
         }
 
         case ActionType.AddVacation: {
             return {
                 ...state,
+                addVacationSuccess:true
             }
         }
         case ActionType.UnFollow: {
@@ -59,7 +80,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
             updatedVacations[vacationIndex] = {
                 ...currentVacation,
                 isFollowed: false,
-                numOfFollowers: currentVacation.numOfFollowers -1 
+                numOfFollowers: currentVacation.numOfFollowers - 1
             };
 
             return {

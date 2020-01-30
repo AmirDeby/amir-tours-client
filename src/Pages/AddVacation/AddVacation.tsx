@@ -12,9 +12,10 @@ import "./AddVacation.css";
 
 
 export interface IAddVacationProps {
-    
-    addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): void,
+    addVacationSuccess:boolean,
+    addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): Promise<boolean>,
 }
+
 
 interface IAddVacationState {
 
@@ -29,41 +30,42 @@ interface IAddVacationState {
 
 class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState> {
 
-
-    state: IAddVacationState = {
+    initialState: IAddVacationState = {
         description: "",
         destination: "",
         image: "",
         startDate: "",
         endDate: "",
         price: 0,
-    }
-
-    componentDidMount() {
 
     }
+
+    state = this.initialState;
+
 
     public render() {
+        const { addVacationSuccess } = this.props;
+        const {description,destination,endDate,image,price,startDate} = this.state 
         return (
             <div className="container row">
 
                 <Form onSubmit={this.onSubmit} className="form-div">
                     <h1><u>Add Vacations</u></h1>
-                    <Form.Control onChange={this.generareOnChangeHandler('description')} name="description" placeholder="description" />
+                    <Form.Control required onChange={this.generareOnChangeHandler('description')} value={description} name="description" placeholder="description" />
                     <Row className="row">
                         <Col>
-                            <Form.Control onChange={this.generareOnChangeHandler('destination')} name="destination" placeholder="destination" />
+                            <Form.Control required onChange={this.generareOnChangeHandler('destination')} value={destination} name="destination" placeholder="destination" />
                         </Col>
                         <Col>
-                            <Form.Control onChange={this.generareOnChangeHandler('image')} name="image" placeholder="image(enter URL)" />
+                            <Form.Control required onChange={this.generareOnChangeHandler('image')} value={image}  name="image" placeholder="image(enter URL)" />
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Control onChange={this.generareOnChangeHandler('startDate')} name="startDate" type="date" placeholder="Start Date" />
+                            <Form.Control required onChange={this.generareOnChangeHandler('startDate')} value={startDate} name="startDate" type="date" placeholder="Start Date" />
                         </Col>
                         <Col>
-                            <Form.Control onChange={this.generareOnChangeHandler('endDate')} name="endDate" type="date" placeholder="End Date" />
+                            <Form.Control required onChange={this.generareOnChangeHandler('endDate')} value={endDate} name="endDate" type="date" placeholder="End Date" />
                         </Col>
                     </Row>
                     <Row>
@@ -72,15 +74,24 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
                                 <InputGroup.Prepend>
                                     <InputGroup.Text>$</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl onChange={this.generareOnChangeHandler('price')} name="price" aria-label="Amount (to the nearest dollar)" placeholder="price" />
+                                <FormControl type="number" required onChange={this.generareOnChangeHandler('price')} value={price.toString()} name="price" aria-label="Amount (to the nearest dollar)" placeholder="price" />
                             </InputGroup>
                         </Col>
                     </Row>
-                    <Button type="submit">Add Vacation</Button>
+                    <Button disabled={!this.initialState} type="submit">Add Vacation</Button>
+                    {addVacationSuccess
+                        ?
+                        <div style={{ margin: "10px" ,color:"red" }}>
+                                <h2>Vacation Added successfully</h2>
+                        </div>
+                        :
+                        null
+                    }
                 </Form>
             </div>
         );
     }
+
     generareOnChangeHandler = (fieldName: keyof IAddVacationState) => {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const { value } = e.target;
@@ -89,19 +100,26 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
             } as any)
         }
     }
+
     onSubmit = async (e: React.FormEvent) => {
         const { description, destination, image, startDate, endDate, price } = this.state;
         const { addVacation } = this.props
         e.preventDefault()
 
-        addVacation(description, destination, image, startDate, endDate, price)
+        const result = await addVacation(description, destination, image, startDate, endDate, price);
 
+        if (result) {
+            this.setState(
+               this.initialState
+            )
+        }
+        
     }
 }
 
 const mapStateToProps = (state: IState) => {
     return {
-       
+        addVacationSuccess:state.addVacationSuccess
     }
 }
 
