@@ -11,8 +11,9 @@ import { IState } from '../../reducer';
 import "./AddVacation.css";
 
 
+
 export interface IAddVacationProps {
-    addVacationSuccess:boolean,
+    addVacationSuccess: boolean,
     addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): Promise<boolean>,
 }
 
@@ -45,7 +46,8 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
     public render() {
         const { addVacationSuccess } = this.props;
-        const {description,destination,endDate,image,price,startDate} = this.state 
+        const { description, destination, endDate, image, price, startDate } = this.state;
+        const isEnabled = this.canBeSubmitted()
         return (
             <div className="container row">
 
@@ -57,7 +59,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
                             <Form.Control required onChange={this.generareOnChangeHandler('destination')} value={destination} name="destination" placeholder="destination" />
                         </Col>
                         <Col>
-                            <Form.Control required onChange={this.generareOnChangeHandler('image')} value={image}  name="image" placeholder="image(enter URL)" />
+                            <Form.Control required onChange={this.generareOnChangeHandler('image')} value={image} name="image" placeholder="image(enter URL)" />
                         </Col>
                     </Row>
                     <Row>
@@ -78,11 +80,11 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
                             </InputGroup>
                         </Col>
                     </Row>
-                    <Button disabled={!this.initialState} type="submit">Add Vacation</Button>
+                    <Button disabled={!isEnabled} type="submit">Add Vacation</Button>
                     {addVacationSuccess
                         ?
-                        <div style={{ margin: "10px" ,color:"red" }}>
-                                <h2>Vacation Added successfully</h2>
+                        <div className="success-div">
+                            <h2>Vacation Added successfully</h2>
                         </div>
                         :
                         null
@@ -93,6 +95,8 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     generareOnChangeHandler = (fieldName: keyof IAddVacationState) => {
+        console.log(this.state);
+        
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const { value } = e.target;
             this.setState({
@@ -110,16 +114,27 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
         if (result) {
             this.setState(
-               this.initialState
+                this.initialState
             )
         }
-        
+
     }
+
+    canBeSubmitted() {
+        const {price, destination ,image,description } = this.state;
+        return (
+            price > 0 &&
+            destination.length > 0 &&
+            image.length > 0 &&
+            description.length > 0
+        );
+    }
+
 }
 
 const mapStateToProps = (state: IState) => {
     return {
-        addVacationSuccess:state.addVacationSuccess
+        addVacationSuccess: state.addVacationSuccess
     }
 }
 
