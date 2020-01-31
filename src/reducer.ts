@@ -4,7 +4,7 @@ import { Vacation } from "./Components/Vacation/Vacation";
 
 export interface IState {
     isLogged: boolean,
-    addVacationSuccess:boolean,
+    addVacationSuccess: boolean,
     vacations: IVacation[],
     userDetails: IUserDetails,
 }
@@ -18,7 +18,7 @@ export interface IAction {
 
 const initialState: IState = {
     isLogged: false,
-    addVacationSuccess:false,
+    addVacationSuccess: false,
     vacations: [],
     userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
 };
@@ -51,24 +51,20 @@ export const reducer = (state = initialState, action: IAction): IState => {
 
         case ActionType.DeleteVacation: {
 
-            // const id = action.payload;
-            // const duplacateVacations = state.vacations.concat();
-            // // const vacationsIndex = duplacateVacations.findIndex(vacation => vacation.id === id);
-            // // const currentVacation = duplacateVacations.splice(vacationsIndex,1)
-            // console.log(duplacateVacations);
-            // console.log(id);
-            // // console.log(currentVacation);
-            // console.log(currentVacation);
+            const { id } = action.payload;
+            const vacations = state.vacations.concat();
+            const vacationIndex = vacations.findIndex(vacation => vacation.id === id);
+            vacations.splice(vacationIndex, 1);
             return {
                 ...state,
-                vacations: action.payload
+                vacations,
             }
         }
 
         case ActionType.AddVacation: {
             return {
                 ...state,
-                addVacationSuccess:true
+                addVacationSuccess: true
             }
         }
         case ActionType.UnFollow: {
@@ -107,11 +103,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
         }
 
         case ActionType.LogOut: {
-            return {
-                ...state,
-                isLogged: false,
-                userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
-            }
+            return initialState;
         }
 
         case ActionType.GetVacationsPending: {

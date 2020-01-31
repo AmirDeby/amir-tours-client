@@ -17,7 +17,7 @@ export interface IVacationProps {
 class _Vacation extends React.Component<IVacationProps> {
     public render() {
         const { description, destination, endDate, image, isFollowed, price, startDate, numOfFollowers } = this.props.vacation;
-        
+
         return (
             <div>
                 <Card className="main-div">
@@ -41,7 +41,7 @@ class _Vacation extends React.Component<IVacationProps> {
                                 {isFollowed ? 'followed' : 'not followed'}
                             </Button>
                         </Card.Text>
-                        <p className="heart followers" ><div className="follower">{numOfFollowers}</div></p>
+                        <div className="heart followers" ><div className="follower">{numOfFollowers}</div></div>
                     </Card.Body>
                 </Card>
             </div>

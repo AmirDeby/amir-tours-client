@@ -37,7 +37,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
         image: "",
         startDate: "",
         endDate: "",
-        price: 0,
+        price: null,
 
     }
 
@@ -53,21 +53,21 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
                 <Form onSubmit={this.onSubmit} className="form-div">
                     <h1><u>Add Vacations</u></h1>
-                    <Form.Control required onChange={this.generareOnChangeHandler('description')} value={description} name="description" placeholder="description" />
+                    <Form.Control required onChange={this.onChangeDescription} value={description} name="description" placeholder="description" />
                     <Row className="row">
                         <Col>
-                            <Form.Control required onChange={this.generareOnChangeHandler('destination')} value={destination} name="destination" placeholder="destination" />
+                            <Form.Control required onChange={this.onChangeDestination} value={destination} name="destination" placeholder="destination" />
                         </Col>
                         <Col>
-                            <Form.Control required onChange={this.generareOnChangeHandler('image')} value={image} name="image" placeholder="image(enter URL)" />
+                            <Form.Control required onChange={this.generateOnChangeHandler('image')} value={image} name="image" placeholder="image(enter URL)" />
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Control required onChange={this.generareOnChangeHandler('startDate')} value={startDate} name="startDate" type="date" placeholder="Start Date" />
+                            <Form.Control required onChange={this.generateOnChangeHandler('startDate')} value={startDate} name="startDate" type="date" placeholder="Start Date" />
                         </Col>
                         <Col>
-                            <Form.Control required onChange={this.generareOnChangeHandler('endDate')} value={endDate} name="endDate" type="date" placeholder="End Date" />
+                            <Form.Control required onChange={this.onChangeEndDate} value={endDate} name="endDate" type="date" placeholder="End Date" />
                         </Col>
                     </Row>
                     <Row>
@@ -76,7 +76,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
                                 <InputGroup.Prepend>
                                     <InputGroup.Text>$</InputGroup.Text>
                                 </InputGroup.Prepend>
-                                <FormControl type="number" required onChange={this.generareOnChangeHandler('price')} value={price.toString()} name="price" aria-label="Amount (to the nearest dollar)" placeholder="price" />
+                                <FormControl type="number" required onChange={this.generateOnChangeHandler('price')} value={price ? price.toString() : ''} name="price" aria-label="Amount (to the nearest dollar)" placeholder="price" />
                             </InputGroup>
                         </Col>
                     </Row>
@@ -94,9 +94,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
         );
     }
 
-    generareOnChangeHandler = (fieldName: keyof IAddVacationState) => {
-        console.log(this.state);
-        
+    generateOnChangeHandler = (fieldName: keyof IAddVacationState) => {
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const { value } = e.target;
             this.setState({
@@ -104,6 +102,10 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
             } as any)
         }
     }
+
+    onChangeDescription = this.generateOnChangeHandler('description');
+    onChangeDestination = this.generateOnChangeHandler('destination');
+    onChangeEndDate = this.generateOnChangeHandler('endDate');
 
     onSubmit = async (e: React.FormEvent) => {
         const { description, destination, image, startDate, endDate, price } = this.state;
@@ -121,7 +123,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     canBeSubmitted() {
-        const {price, destination ,image,description } = this.state;
+        const { price, destination, image, description } = this.state;
         return (
             price > 0 &&
             destination.length > 0 &&

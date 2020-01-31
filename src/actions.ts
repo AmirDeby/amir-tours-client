@@ -67,11 +67,10 @@ export const addVacationAction = (description: string, destination: string, imag
 
 export const deletaVacationAction = (id: number) => {
     return async (dispatch: Dispatch<IAction>) => {
-        const { data } = await ApiClient.get().delete(`http://localhost:5000/vacations/${id}`);
+        await ApiClient.get().delete(`http://localhost:5000/vacations/${id}`);
         dispatch({
             type: ActionType.DeleteVacation,
-            // payload:{id}
-            payload: data
+            payload: { id }
         })
     }
 }
@@ -82,13 +81,14 @@ export const registerAction = (firstName: string, lastName: string, password: st
             const response = await ApiClient.get().post('http://localhost:5000/auth/register', {
                 firstName, lastName, password, userName
             });
+            const { token } = response.data;
+
+            setToken(token);
+
             dispatch({
                 type: ActionType.RegisterSuccess,
                 payload: response.data
             });
-            const { token } = response.data;
-
-            setToken(token);
         }
         catch (e) {
             dispatch({
