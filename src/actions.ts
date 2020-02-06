@@ -4,6 +4,43 @@ import { setToken } from '.';
 import { ApiClient } from './apiClient';
 import { IVacation } from './Models/vacation.model';
 
+export type IEditableVacationFields = Pick<IVacation, 'description' | 'destination' | 'endDate' | 'image' | 'price' | 'startDate'>;
+
+export const editVacationAction = (id: number, fields: IEditableVacationFields) => {
+    return async (dispatch: Dispatch<IAction>) => {
+
+        try {
+        await ApiClient.get().put(`http://localhost:5000/vacations/${id}`, fields);
+        dispatch({
+            type: ActionType.EditVacationSuccess,
+            payload: {
+                fields,
+                id,
+            }
+        })}
+        catch (e) {
+            dispatch({
+                type: ActionType.EditVacationFail,
+                payload: e.message
+            })
+        }
+    }
+}
+
+export const closeEditAction = () => {
+    return {
+        type: ActionType.CloseEdit,
+        payload:{}
+    }
+}
+
+export const openEditAction = (id:number) => {
+    return {
+            type: ActionType.OpenEdit,
+            payload: id 
+    }
+}
+
 export const getUserDetailsAction = () => {
     return async (dispatch: Dispatch<IAction>) => {
         try {
@@ -64,7 +101,6 @@ export const addVacationAction = (description: string, destination: string, imag
     }
 }
 
-
 export const deletaVacationAction = (id: number) => {
     return async (dispatch: Dispatch<IAction>) => {
         await ApiClient.get().delete(`http://localhost:5000/vacations/${id}`);
@@ -98,7 +134,6 @@ export const registerAction = (firstName: string, lastName: string, password: st
         }
     }
 }
-
 
 export const logInAction = (userName: string, password: string) => {
 

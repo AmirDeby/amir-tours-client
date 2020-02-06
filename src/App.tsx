@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router';
+import { Route, Switch} from 'react-router';
 import { getUserDetailsAction } from './actions';
 import './App.css';
 import { AddVacation } from './Pages/AddVacation/AddVacation';
@@ -12,6 +12,9 @@ import { VacationPage } from './Pages/VacationPage/VacationPage';
 import { IState } from './reducer';
 import { AdminVacationPage } from './Pages/AdminVacationPage/AdminVacationPage';
 import { IUserDetails } from './Models/userDetails.model';
+import { EditModal } from './Components/EditModal/EditModal';
+import { Link } from 'react-router-dom';
+import { url } from 'inspector';
 
 // export default class NavBar extends React.Component<INavBarProps, INavBarState> {
 export interface IAppProps {
@@ -36,9 +39,17 @@ class _App extends React.Component<IAppProps> {
     return (
       <div className="App">
         <NavBar />
+        <EditModal />
         <Switch>
           <Route path="/" exact>
-            <div>homepage</div>
+            <div>
+              <h1>
+                <u>Welcome to Amir's Tours</u>
+              </h1>
+               <div className="title">
+                <h4><Link to="/register">Register</Link> to see your next vacation</h4>
+              </div>
+              </div>
           </Route>
           <Route path="/login">
             <Login />
@@ -47,7 +58,7 @@ class _App extends React.Component<IAppProps> {
             <Register />
           </Route>
           <Route path="/vacations">
-            {isAdmin ? <AdminVacationPage />  : <VacationPage /> }
+            {isAdmin ? <AdminVacationPage /> : <VacationPage />}
           </Route>
           <Route path="/followbar">
             <FollowBar />

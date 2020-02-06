@@ -28,7 +28,7 @@ class _AdminVacationPage extends React.Component<IAdminVacationPageProps> {
         return (
             <div style={{ margin: "13px" }} className="row">
                 {vacations.map((vacation) =>
-                    <div key={vacation.id} className="col-8 col-md-4">
+                    <div key={vacation.id} className="col-9 col-md-3">
                         <EditVacation vacation={vacation} />
                     </div>)}
             </div>

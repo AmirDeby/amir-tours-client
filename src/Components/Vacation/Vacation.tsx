@@ -23,25 +23,24 @@ class _Vacation extends React.Component<IVacationProps> {
                 <Card className="main-div">
                     <Card.Img variant="top" src={image} className="img-size" />
                     <Card.Body>
-                        <Card.Title>{destination}</Card.Title>
+                        <Card.Title>
+                            <div>{destination}</div> 
+                            <div className="heart followers" ><div className="follower">{numOfFollowers}</div></div>
+                        </Card.Title>
                         <Card.Text className="description-div">
                             {description}
                         </Card.Text>
                         <Card.Text>
-                            {moment(startDate).format('DD-MM-YYYY')}
+                            {moment(startDate).format('DD-MM-YYYY')} - {moment(endDate).format('DD-MM-YYYY')}
                         </Card.Text>
                         <Card.Text>
-                            {moment(endDate).format('DD-MM-YYYY')}
+                            <Button size="sm" variant="outline-success"> {`Order $ ${price}`}</Button>
                         </Card.Text>
                         <Card.Text>
-                            <Button variant="outline-success"> {`Order $ ${price}`}</Button>
-                        </Card.Text>
-                        <Card.Text>
-                            <Button variant="outline-dark" type="button" onClick={this.onClickHandler}>
+                            <Button size="sm" variant="outline-dark" type="button" onClick={this.onClickHandler}>
                                 {isFollowed ? 'followed' : 'not followed'}
                             </Button>
                         </Card.Text>
-                        <div className="heart followers" ><div className="follower">{numOfFollowers}</div></div>
                     </Card.Body>
                 </Card>
             </div>

@@ -1,3 +1,9 @@
 .link-mr{
     margin-right: 11px;
 }
+
+.back-color{
+background: rgba(224, 234, 252, 0.473);  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, rgba(207, 222, 243, 0.534), rgba(224, 234, 252, 0.623));  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, rgba(207, 222, 243, 0.664), rgba(224, 234, 252, 0.596)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

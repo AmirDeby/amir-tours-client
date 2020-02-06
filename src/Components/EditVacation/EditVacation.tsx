@@ -5,16 +5,20 @@ import Card from 'react-bootstrap/Card';
 import { connect } from 'react-redux';
 import { IVacation } from '../../Models/vacation.model';
 import "./EditVacation.css";
-import { deletaVacationAction } from '../../actions';
+import { deletaVacationAction, openEditAction } from '../../actions';
+import { IState } from '../../reducer';
 
 export interface IEditVacationProps {
     vacation: IVacation,
     deleteVacation?(id: number): void,
+    openEdit(id:number):void,
+    
 }
 
 class _EditVacation extends React.Component<IEditVacationProps> {
     public render() {
-        const { description, destination, endDate, image, startDate } = this.props.vacation;
+        const { description, destination, endDate, image, startDate,id } = this.props.vacation;
+        const {openEdit} = this.props
         return (
             <div>
                 <Card className="edit-vacation">
@@ -28,27 +32,35 @@ class _EditVacation extends React.Component<IEditVacationProps> {
                             {moment(startDate).format('DD-MM-YYYY')} -- {moment(endDate).format('DD-MM-YYYY')}
                         </Card.Text>
                         <Card.Text>
-                            <Button variant="outline-primary">Edit</Button>
+                            <Button size="sm" type="button" onClick={this.onEditHandler} variant="outline-primary">Edit</Button>
                         </Card.Text>
-                        <Button type="button" onClick={this.onDeleteHandler} variant="outline-danger">Delete</Button>
+                        <Button size="sm" type="button" onClick={this.onDeleteHandler} variant="outline-danger">Delete</Button>
                     </Card.Body>
                 </Card>
             </div>
         );
     }
 
+
+
     onDeleteHandler = () => {
         const { id } = this.props.vacation;
-        const {deleteVacation} = this.props;
-        
+        const { deleteVacation } = this.props;
+
         deleteVacation(id)
-        
+    }
+
+    onEditHandler = () => {
+        const { id } = this.props.vacation;
+        const { openEdit } = this.props;
+
+        openEdit(id)
     }
 }
 
-
 const mapDispatchToProps = {
-    deleteVacation: deletaVacationAction
+    deleteVacation: deletaVacationAction,
+    openEdit: openEditAction,
 }
 
 export const EditVacation = connect(

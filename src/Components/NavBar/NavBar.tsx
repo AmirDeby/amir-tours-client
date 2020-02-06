@@ -20,7 +20,7 @@ class _NavBar extends React.Component<INavBarProps> {
         const { userName, isAdmin, isLogged } = this.props
         return (
             <div>
-                <Navbar style={{ backgroundColor: "#dae0e5ba" }} >
+                <Navbar className="back-color" >
                     <Navbar.Brand>Amir's Tours</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

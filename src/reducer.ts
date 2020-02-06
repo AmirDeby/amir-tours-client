@@ -7,12 +7,12 @@ export interface IState {
     addVacationSuccess: boolean,
     vacations: IVacation[],
     userDetails: IUserDetails,
+    vacationInEditId: number;
 }
 
 export interface IAction {
     type: ActionType;
     payload: any;
-
 }
 
 
@@ -20,10 +20,12 @@ const initialState: IState = {
     isLogged: false,
     addVacationSuccess: false,
     vacations: [],
-    userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null }
+    userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null },
+    vacationInEditId: null,
 };
 
 export enum ActionType {
+
     RegisterSuccess = "REGISTER_SUCCESS",
     RegisterFail = "REGISTER_FAIL",
     LoginSuccess = "LOGIN_SUCCESS",
@@ -35,14 +37,57 @@ export enum ActionType {
     UnFollow = "UNFOLLOW",
     AddVacation = "ADD_VACATION",
     AddVacationFail = "ADD_VACATION_FAIL",
-    DeleteVacation = "DELETE_VACATION"
-
+    DeleteVacation = "DELETE_VACATION",
+    OpenEdit = "OPEN_EDIT",
+    CloseEdit = "CLOSE_EDIT",
+    EditVacationSuccess = "EDIT_VACATION_SUCCESS",
+    EditVacationFail = "EDIT_VACATION_FAIL"
 
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
 
+        case ActionType.EditVacationSuccess: {
+
+            const fields = action.payload;
+            const editVacations = state.vacations.concat();
+            const vacationIndex = editVacations.findIndex(vacation => vacation.id === fields.id);
+            const currentVacation = editVacations[vacationIndex]
+            
+            editVacations[vacationIndex] = {
+                ...currentVacation,
+                description: fields.fields.description,
+                destination: fields.fields.destination,
+                image: fields.fields.image,
+                startDate: fields.fields.startDate,
+                endDate: fields.fields.endDate,
+                price: fields.fields.price
+            }
+            return {
+                ...state,
+                vacations: editVacations
+            }
+        }
+       
+        case ActionType.OpenEdit: {
+            return {
+                ...state,
+                vacationInEditId: action.payload
+            }
+        }
+            
+        case ActionType.CloseEdit: {
+            return {
+                ...state,
+                vacationInEditId: null
+            }
+        }
+        case ActionType.EditVacationFail: {
+            return {
+                ...state,
+            }
+        }
         case ActionType.AddVacationFail: {
             return {
                 ...state,

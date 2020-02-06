@@ -7,34 +7,15 @@ import { connect } from 'react-redux';
 import { IState } from '../../reducer';
 import { IVacation } from '../../Models/vacation.model';
 import { Redirect } from 'react-router';
+import { getMyVacationsAction } from '../../actions';
 
 export interface IFollowBarProps {
     vacations: IVacation[],
-    isLogged:boolean,
+    isLogged: boolean,
+    getVacations(): void,
 }
 
 const colors = scaleOrdinal(schemeCategory10).range();
-
-const data = [
-    {
-        destination: 'London', uv: 4000, followers: 10, male: 10,
-    },
-    {
-        destination: 'Tbilisi', uv: 3000, followers: 5, male: 5,
-    },
-    {
-        destination: 'Paris', uv: 3000, followers: 7, male: 7,
-    },
-    {
-        destination: 'Budapest', uv: 3000, followers: 9, male: 9,
-    },
-    {
-        destination: 'Berlin', uv: 3000, followers: 2, male: 2,
-    },
-    {
-        destination: 'Rome', uv: 2000, followers: 17, male: 17,
-    }
-];
 
 const getPath = (x: any, y: any, width: any, height: any) => `M${x},${y + height}
           C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3} ${x + width / 2}, ${y}
@@ -59,12 +40,19 @@ TriangleBar.propTypes = {
 
 class _FollowBar extends PureComponent<IFollowBarProps> {
 
+    componentDidMount() {
+        const { getVacations, vacations } = this.props;
+        if (!vacations.length) {
+            getVacations()
+        }
+    }
+
     static jsfiddleUrl = 'https://jsfiddle.net/alidingling/rnywhbu8/';
 
     render() {
-        const { vacations, isLogged } = this.props;
+        const { vacations, isLogged} = this.props;
         if (!isLogged) {
-            return <Redirect to="login"/>
+            return <Redirect to="login" />
         }
         return (
             <BarChart style={{ margin: " 10px auto" }}
@@ -80,7 +68,7 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
                 <YAxis />
                 <Bar dataKey="numOfFollowers" fill="#8884d8" shape={<TriangleBar />} label={{ position: 'top' }}>
                     {
-                        data.map((entry, index) => (
+                        vacations.map((_, index) => (
                             <Cell key={`cell-${index}`} fill={colors[index % 20]} />
                         ))
                     }
@@ -93,11 +81,11 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
 const mapStateToProps = (state: IState) => {
     return {
         vacations: state.vacations,
-        isLogged:state.isLogged
+        isLogged: state.isLogged
     }
 }
 const mapDispatchToProps = {
-
+    getVacations: getMyVacationsAction
 }
 
 export const FollowBar = connect(
