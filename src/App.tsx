@@ -1,20 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch} from 'react-router';
+import { Route, Switch } from 'react-router';
+import { Link } from 'react-router-dom';
 import { getUserDetailsAction } from './actions';
 import './App.css';
+import { EditModal } from './Components/EditModal/EditModal';
+import { NavBar } from './Components/NavBar/NavBar';
+import { IUserDetails } from './Models/userDetails.model';
 import { AddVacation } from './Pages/AddVacation/AddVacation';
+import { AdminVacationPage } from './Pages/AdminVacationPage/AdminVacationPage';
 import { FollowBar } from './Pages/FollowBar/FollowBar';
 import { Login } from './Pages/Login/Login';
-import { NavBar } from './Components/NavBar/NavBar';
 import { Register } from './Pages/Register/Register';
 import { VacationPage } from './Pages/VacationPage/VacationPage';
 import { IState } from './reducer';
-import { AdminVacationPage } from './Pages/AdminVacationPage/AdminVacationPage';
-import { IUserDetails } from './Models/userDetails.model';
-import { EditModal } from './Components/EditModal/EditModal';
-import { Link } from 'react-router-dom';
-import { url } from 'inspector';
 
 // export default class NavBar extends React.Component<INavBarProps, INavBarState> {
 export interface IAppProps {

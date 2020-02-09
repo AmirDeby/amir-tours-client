@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import { connect } from 'react-redux';
@@ -8,6 +8,7 @@ import { IState } from '../../reducer';
 import { IVacation } from '../../Models/vacation.model';
 import { Redirect } from 'react-router';
 import { getMyVacationsAction } from '../../actions';
+import { Vacation } from '../../Components/Vacation/Vacation';
 
 export interface IFollowBarProps {
     vacations: IVacation[],
@@ -54,11 +55,12 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
         if (!isLogged) {
             return <Redirect to="login" />
         }
+        const vacationWithFollowers = vacations.filter(vacation => vacation.numOfFollowers)
         return (
             <BarChart style={{ margin: " 10px auto" }}
                 width={850}
                 height={370}
-                data={vacations}
+                data={vacationWithFollowers}
                 margin={{
                     top: 30, right: 30, left: 20, bottom: 5,
                 }}
@@ -68,7 +70,7 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
                 <YAxis />
                 <Bar dataKey="numOfFollowers" fill="#8884d8" shape={<TriangleBar />} label={{ position: 'top' }}>
                     {
-                        vacations.map((_, index) => (
+                        vacationWithFollowers.map((_, index) => (
                             <Cell key={`cell-${index}`} fill={colors[index % 20]} />
                         ))
                     }

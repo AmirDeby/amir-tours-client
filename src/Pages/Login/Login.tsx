@@ -10,12 +10,14 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { IState } from '../../reducer';
 import { logInAction } from '../../actions';
-
+import { resetErrorMessageAction } from '../../actions';
+import './Login.css';
 
 export interface ILoginProps {
     isLogged: boolean,
     login(userName: string, password: string): void,
-    
+    errorMessage: boolean,
+    resetErrorMessage(): void,
 }
 
 interface ILoginState {
@@ -29,8 +31,13 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
         password: "",
     }
 
+    componentWillUnmount() {
+        const { resetErrorMessage } = this.props;
+        resetErrorMessage()
+    }
+
     public render() {
-        const { isLogged } = this.props;
+        const { isLogged, errorMessage } = this.props;
         if (isLogged) return <Redirect to="/vacations" />
         return (
             <div>
@@ -66,7 +73,7 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
                                 autoComplete="current-password"
                                 onChange={this.onChangeHandler}
                             />
-
+                            <span className={["error", errorMessage ? 'visible' : 'invisible'].join(' ')}>*incorrect password or userName</span>
                             <Button
                                 type="submit"
                                 fullWidth
@@ -93,7 +100,7 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
         const { userName, password } = this.state;
         e.preventDefault();
         login(userName, password);
-        
+
 
 
     }
@@ -107,12 +114,12 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
 
 const mapStateToProps = (state: IState) => ({
     isLogged: state.isLogged,
-
+    errorMessage: state.errorMessage !== "",
 })
 
 const mapDispatchToProps = {
     login: logInAction,
-    
+    resetErrorMessage: resetErrorMessageAction
 }
 
 export const Login = connect(

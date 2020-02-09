@@ -41,7 +41,6 @@ class _NavBar extends React.Component<INavBarProps> {
     }
 }
 
-
 const mapStateToProps = (state: IState) => {
     let { userName, isAdmin } = state.userDetails;
     userName = userName ? `Hello  ${userName}` : "";

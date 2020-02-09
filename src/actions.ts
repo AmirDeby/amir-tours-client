@@ -6,18 +6,31 @@ import { IVacation } from './Models/vacation.model';
 
 export type IEditableVacationFields = Pick<IVacation, 'description' | 'destination' | 'endDate' | 'image' | 'price' | 'startDate'>;
 
+export const resetVacationAction = () => {
+    return {
+        type: ActionType.ResetVacationSuccess,
+        payload: {}
+    }
+}
+export const resetErrorMessageAction = () => {
+    return {
+        type: ActionType.ResetErrorMessage,
+        payload: {}
+    }
+}
 export const editVacationAction = (id: number, fields: IEditableVacationFields) => {
     return async (dispatch: Dispatch<IAction>) => {
 
         try {
-        await ApiClient.get().put(`http://localhost:5000/vacations/${id}`, fields);
-        dispatch({
-            type: ActionType.EditVacationSuccess,
-            payload: {
-                fields,
-                id,
-            }
-        })}
+            await ApiClient.get().put(`http://localhost:5000/vacations/${id}`, fields);
+            dispatch({
+                type: ActionType.EditVacationSuccess,
+                payload: {
+                    fields,
+                    id,
+                }
+            })
+        }
         catch (e) {
             dispatch({
                 type: ActionType.EditVacationFail,
@@ -30,14 +43,14 @@ export const editVacationAction = (id: number, fields: IEditableVacationFields) 
 export const closeEditAction = () => {
     return {
         type: ActionType.CloseEdit,
-        payload:{}
+        payload: {}
     }
 }
 
-export const openEditAction = (id:number) => {
+export const openEditAction = (id: number) => {
     return {
-            type: ActionType.OpenEdit,
-            payload: id 
+        type: ActionType.OpenEdit,
+        payload: id
     }
 }
 

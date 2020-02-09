@@ -7,13 +7,17 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { connect } from 'react-redux';
 import { addVacationAction } from '../../actions';
+import { resetVacationAction } from '../../actions';
 import { IState } from '../../reducer';
 import "./AddVacation.css";
+import { Redirect } from 'react-router';
 
 
 
 export interface IAddVacationProps {
     addVacationSuccess: boolean,
+    isLogged:boolean,
+    resetVacationSuccess(): void,
     addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): Promise<boolean>,
 }
 
@@ -43,11 +47,18 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
     state = this.initialState;
 
+    componentWillUnmount() {
+        const { resetVacationSuccess } = this.props;
+        resetVacationSuccess();
+    }
 
     public render() {
-        const { addVacationSuccess } = this.props;
+        const { addVacationSuccess,isLogged } = this.props;
         const { description, destination, endDate, image, price, startDate } = this.state;
         const isEnabled = this.canBeSubmitted()
+        if (!isLogged) {
+            return <Redirect to="/login" />
+        }
         return (
             <div className="container row">
 
@@ -95,7 +106,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     generateOnChangeHandler = (fieldName: keyof IAddVacationState) => {
-        
+
         return (e: React.ChangeEvent<HTMLInputElement>): void => {
             const { value } = e.target;
             this.setState({
@@ -140,12 +151,14 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
 const mapStateToProps = (state: IState) => {
     return {
-        addVacationSuccess: state.addVacationSuccess
+        addVacationSuccess: state.addVacationSuccess,
+        isLogged:state.isLogged
     }
 }
 
 const mapDispatchToProps = {
-    addVacation: addVacationAction
+    addVacation: addVacationAction,
+    resetVacationSuccess: resetVacationAction
 }
 
 export const AddVacation = connect(

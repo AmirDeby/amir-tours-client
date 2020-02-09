@@ -1,13 +1,13 @@
-import { IVacation } from "./Models/vacation.model";
 import { IUserDetails } from "./Models/userDetails.model";
-import { Vacation } from "./Components/Vacation/Vacation";
+import { IVacation } from "./Models/vacation.model";
 
 export interface IState {
     isLogged: boolean,
     addVacationSuccess: boolean,
     vacations: IVacation[],
     userDetails: IUserDetails,
-    vacationInEditId: number;
+    vacationInEditId: number,
+    errorMessage: string,
 }
 
 export interface IAction {
@@ -22,6 +22,7 @@ const initialState: IState = {
     vacations: [],
     userDetails: { message: "", userName: "", isAdmin: 0, iat: null, userId: null },
     vacationInEditId: null,
+    errorMessage: "",
 };
 
 export enum ActionType {
@@ -41,42 +42,52 @@ export enum ActionType {
     OpenEdit = "OPEN_EDIT",
     CloseEdit = "CLOSE_EDIT",
     EditVacationSuccess = "EDIT_VACATION_SUCCESS",
-    EditVacationFail = "EDIT_VACATION_FAIL"
+    EditVacationFail = "EDIT_VACATION_FAIL",
+    ResetVacationSuccess = "RESET_VACATION_SUCCESS",
+    ResetErrorMessage = "RESET_ERROR_MESSAGE",
 
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
 
+        case ActionType.ResetErrorMessage: {
+            return {
+                ...state,
+                errorMessage: ""
+            }
+        }
+        case ActionType.ResetVacationSuccess: {
+            return {
+                ...state,
+                addVacationSuccess: false
+            }
+        }
+
         case ActionType.EditVacationSuccess: {
 
-            const fields = action.payload;
+            const { fields, id } = action.payload;
             const editVacations = state.vacations.concat();
-            const vacationIndex = editVacations.findIndex(vacation => vacation.id === fields.id);
+            const vacationIndex = editVacations.findIndex(vacation => vacation.id === id);
             const currentVacation = editVacations[vacationIndex]
-            
+
             editVacations[vacationIndex] = {
                 ...currentVacation,
-                description: fields.fields.description,
-                destination: fields.fields.destination,
-                image: fields.fields.image,
-                startDate: fields.fields.startDate,
-                endDate: fields.fields.endDate,
-                price: fields.fields.price
+                ...fields,
             }
             return {
                 ...state,
                 vacations: editVacations
             }
         }
-       
+
         case ActionType.OpenEdit: {
             return {
                 ...state,
                 vacationInEditId: action.payload
             }
         }
-            
+
         case ActionType.CloseEdit: {
             return {
                 ...state,
@@ -173,6 +184,7 @@ export const reducer = (state = initialState, action: IAction): IState => {
         case ActionType.LoginFail: {
             return {
                 ...state,
+                errorMessage: action.payload
             }
         }
         case ActionType.LoginSuccess: {

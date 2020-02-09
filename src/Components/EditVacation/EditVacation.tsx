@@ -3,10 +3,9 @@ import * as React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { connect } from 'react-redux';
+import { deletaVacationAction, openEditAction } from '../../actions';
 import { IVacation } from '../../Models/vacation.model';
 import "./EditVacation.css";
-import { deletaVacationAction, openEditAction } from '../../actions';
-import { IState } from '../../reducer';
 
 export interface IEditVacationProps {
     vacation: IVacation,
@@ -17,8 +16,7 @@ export interface IEditVacationProps {
 
 class _EditVacation extends React.Component<IEditVacationProps> {
     public render() {
-        const { description, destination, endDate, image, startDate,id } = this.props.vacation;
-        const {openEdit} = this.props
+        const { description, destination, endDate, image, startDate} = this.props.vacation;
         return (
             <div>
                 <Card className="edit-vacation">

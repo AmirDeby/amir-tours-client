@@ -22,10 +22,10 @@ class _Vacation extends React.Component<IVacationProps> {
             <div>
                 <Card className="main-div">
                     <Card.Img variant="top" src={image} className="img-size" />
-                    <Card.Body>
+                    <div className="heart " ><div className="follower">{numOfFollowers}</div></div>
+                    <Card.Body style={{padding:"0.25rem"}}>
                         <Card.Title>
                             <div>{destination}</div> 
-                            <div className="heart followers" ><div className="follower">{numOfFollowers}</div></div>
                         </Card.Title>
                         <Card.Text className="description-div">
                             {description}
@@ -34,7 +34,7 @@ class _Vacation extends React.Component<IVacationProps> {
                             {moment(startDate).format('DD-MM-YYYY')} - {moment(endDate).format('DD-MM-YYYY')}
                         </Card.Text>
                         <Card.Text>
-                            <Button size="sm" variant="outline-success"> {`Order $ ${price}`}</Button>
+                            <Button size="sm" variant="outline-success"> {`Order  $${price}`}</Button>
                         </Card.Text>
                         <Card.Text>
                             <Button size="sm" variant="outline-dark" type="button" onClick={this.onClickHandler}>
