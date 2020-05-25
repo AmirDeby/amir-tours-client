@@ -20,7 +20,6 @@ export const resetErrorMessageAction = () => {
 }
 export const editVacationAction = (id: number, fields: IEditableVacationFields) => {
     return async (dispatch: Dispatch<IAction>) => {
-
         try {
             await ApiClient.get().put(`http://localhost:5000/vacations/${id}`, fields);
             dispatch({
@@ -39,21 +38,18 @@ export const editVacationAction = (id: number, fields: IEditableVacationFields) 
         }
     }
 }
-
 export const closeEditAction = () => {
     return {
         type: ActionType.CloseEdit,
         payload: {}
     }
 }
-
 export const openEditAction = (id: number) => {
     return {
         type: ActionType.OpenEdit,
         payload: id
     }
 }
-
 export const getUserDetailsAction = () => {
     return async (dispatch: Dispatch<IAction>) => {
         try {
@@ -71,7 +67,6 @@ export const getUserDetailsAction = () => {
         }
     }
 }
-
 export const followAction = (vacationId: number) => {
     return async (dispatch: Dispatch<IAction>) => {
         await ApiClient.get().post(`http://localhost:5000/vacations/${vacationId}/follow`);
@@ -81,7 +76,6 @@ export const followAction = (vacationId: number) => {
         })
     }
 }
-
 export const unFollowAction = (vacationId: number) => {
     return async (dispatch: Dispatch<IAction>) => {
         await ApiClient.get().post(`http://localhost:5000/vacations/${vacationId}/unfollow`);
@@ -91,7 +85,6 @@ export const unFollowAction = (vacationId: number) => {
         })
     }
 }
-
 export const addVacationAction = (description: string, destination: string, image: string,
     startDate: string, endDate: string, price: number) => {
     return async (dispatch: Dispatch<IAction>) => {
@@ -113,7 +106,6 @@ export const addVacationAction = (description: string, destination: string, imag
         }
     }
 }
-
 export const deletaVacationAction = (id: number) => {
     return async (dispatch: Dispatch<IAction>) => {
         await ApiClient.get().delete(`http://localhost:5000/vacations/${id}`);
@@ -123,7 +115,6 @@ export const deletaVacationAction = (id: number) => {
         })
     }
 }
-
 export const registerAction = (firstName: string, lastName: string, password: string, userName: string) => {
     return async (dispatch: Dispatch<IAction>) => {
         try {
@@ -131,9 +122,7 @@ export const registerAction = (firstName: string, lastName: string, password: st
                 firstName, lastName, password, userName
             });
             const { token } = response.data;
-
             setToken(token);
-
             dispatch({
                 type: ActionType.RegisterSuccess,
                 payload: response.data
@@ -147,7 +136,6 @@ export const registerAction = (firstName: string, lastName: string, password: st
         }
     }
 }
-
 export const logInAction = (userName: string, password: string) => {
 
     return async (dispatch: Dispatch<IAction>) => {
@@ -155,7 +143,6 @@ export const logInAction = (userName: string, password: string) => {
             const { data } = await ApiClient.get().post('http://localhost:5000/auth/login', { userName, password });
             const { token } = data
             setToken(token);
-
             dispatch({
                 type: ActionType.LoginSuccess,
                 payload: data
@@ -177,9 +164,7 @@ export const getMyVacationsAction = () => {
             payload: {}
         });
         const { data: vacations } = await ApiClient.get().get('http://localhost:5000/vacations/me');
-
         vacations.sort(sortByIsFollowed);
-
         dispatch({
             type: ActionType.GetVacationsSuccess,
             payload: vacations,
@@ -187,7 +172,6 @@ export const getMyVacationsAction = () => {
 
     }
 }
-
 export const logOutAction = (): IAction => {
     localStorage.removeItem('token');
     return {
@@ -195,7 +179,6 @@ export const logOutAction = (): IAction => {
         payload: {}
     }
 }
-
 function sortByIsFollowed(v1: IVacation, v2: IVacation) {
     if (v1.isFollowed && !v2.isFollowed) {
         return -1;

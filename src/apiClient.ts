@@ -6,3 +6,5 @@ export const ApiClient = {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
 }
+
+// every request from the client will send this token by default

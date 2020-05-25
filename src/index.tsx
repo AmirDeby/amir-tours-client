@@ -20,7 +20,6 @@ const middleware = [thunk, logger];
 export function setToken(token: string) {
     localStorage.setItem('token', token);
 
-
     setAxiosToken(token);
 }
 

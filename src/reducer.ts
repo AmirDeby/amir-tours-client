@@ -15,7 +15,6 @@ export interface IAction {
     payload: any;
 }
 
-
 const initialState: IState = {
     isLogged: false,
     addVacationSuccess: false,
@@ -38,7 +37,8 @@ export enum ActionType {
     UnFollow = "UNFOLLOW",
     AddVacation = "ADD_VACATION",
     AddVacationFail = "ADD_VACATION_FAIL",
-    DeleteVacation = "DELETE_VACATION",
+    Delet
+    eVacation = "DELETE_VACATION",
     OpenEdit = "OPEN_EDIT",
     CloseEdit = "CLOSE_EDIT",
     EditVacationSuccess = "EDIT_VACATION_SUCCESS",
@@ -50,6 +50,20 @@ export enum ActionType {
 
 export const reducer = (state = initialState, action: IAction): IState => {
     switch (action.type) {
+
+        case ActionType.RegisterFail: {
+            return {
+                ...state,
+                errorMessage: action.payload
+            }
+        }
+        case ActionType.RegisterSuccess: {
+            return {
+                ...state,
+                isLogged: true,
+                userDetails: action.payload
+            }
+        }
 
         case ActionType.ResetErrorMessage: {
             return {
@@ -174,17 +188,10 @@ export const reducer = (state = initialState, action: IAction): IState => {
             }
         }
 
-        case ActionType.RegisterSuccess: {
-            return {
-                ...state,
-                isLogged: true,
-                userDetails: action.payload
-            }
-        }
         case ActionType.LoginFail: {
             return {
                 ...state,
-                errorMessage: action.payload
+                errorMessage: action.payload,
             }
         }
         case ActionType.LoginSuccess: {

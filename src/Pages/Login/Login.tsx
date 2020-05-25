@@ -19,23 +19,19 @@ export interface ILoginProps {
     errorMessage: boolean,
     resetErrorMessage(): void,
 }
-
 interface ILoginState {
     userName: string,
     password: string,
 }
-
 class _Login extends React.Component<ILoginProps, ILoginState> {
     state: ILoginState = {
         userName: "",
         password: "",
     }
-
     componentWillUnmount() {
         const { resetErrorMessage } = this.props;
         resetErrorMessage()
     }
-
     public render() {
         const { isLogged, errorMessage } = this.props;
         if (isLogged) return <Redirect to="/vacations" />
@@ -44,7 +40,6 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <div>
-
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
@@ -94,24 +89,18 @@ class _Login extends React.Component<ILoginProps, ILoginState> {
             </div>
         );
     }
-
     onSubmit = async (e: React.FormEvent) => {
         const { login } = this.props
         const { userName, password } = this.state;
         e.preventDefault();
         login(userName, password);
 
-
-
     }
-
     onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         this.setState({ [name]: value } as any)
     }
-
 }
-
 const mapStateToProps = (state: IState) => ({
     isLogged: state.isLogged,
     errorMessage: state.errorMessage !== "",

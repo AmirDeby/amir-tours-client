@@ -1,14 +1,13 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { scaleOrdinal } from 'd3-scale';
 import { schemeCategory10 } from 'd3-scale-chromatic';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { IState } from '../../reducer';
-import { IVacation } from '../../Models/vacation.model';
 import { Redirect } from 'react-router';
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from 'recharts';
 import { getMyVacationsAction } from '../../actions';
-import { Vacation } from '../../Components/Vacation/Vacation';
+import { IVacation } from '../../Models/vacation.model';
+import { IState } from '../../reducer';
 
 export interface IFollowBarProps {
     vacations: IVacation[],
@@ -40,7 +39,6 @@ TriangleBar.propTypes = {
 };
 
 class _FollowBar extends PureComponent<IFollowBarProps> {
-
     componentDidMount() {
         const { getVacations, vacations } = this.props;
         if (!vacations.length) {
@@ -63,8 +61,7 @@ class _FollowBar extends PureComponent<IFollowBarProps> {
                 data={vacationWithFollowers}
                 margin={{
                     top: 30, right: 30, left: 20, bottom: 5,
-                }}
-            >
+                }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="destination" />
                 <YAxis />
@@ -89,7 +86,6 @@ const mapStateToProps = (state: IState) => {
 const mapDispatchToProps = {
     getVacations: getMyVacationsAction
 }
-
 export const FollowBar = connect(
     mapStateToProps,
     mapDispatchToProps

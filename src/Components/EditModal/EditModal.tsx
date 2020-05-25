@@ -42,7 +42,6 @@ class _EditModal extends React.Component<IEditModalProps, IEditableVacationField
                 price: nextProps.vacation.price,
             })
         }
-       
     }
 
     public render() {

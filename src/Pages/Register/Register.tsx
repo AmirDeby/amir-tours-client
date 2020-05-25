@@ -10,12 +10,11 @@ import { Link, Redirect } from 'react-router-dom';
 import { registerAction } from '../../actions';
 import { IState } from '../../reducer';
 
-
 export interface IRegisterProps {
     register(firstName: string, lastName: string, password: string, userName: string): void,
-    isLogged:boolean,
+    isLogged: boolean,
+    errorMessage: boolean,
 }
-
 interface IRegisterState {
     firstName: string,
     lastName: string,
@@ -32,11 +31,11 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
         userName: "",
     }
     public render() {
-        const { isLogged } = this.props;
+        const { isLogged, errorMessage } = this.props;
+        const isFilled = this.canBeRegister()
         if (isLogged) {
-            return <Redirect to="/vacations"/>
+            return <Redirect to="/vacations" />
         }
-
         return (
             <div>
                 <Container component="main" maxWidth="xs">
@@ -83,6 +82,7 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
                                         autoComplete="userName"
                                         onChange={this.handlerChange}
                                     />
+                                    <span style={{ color: "red" }} className={["error-user", errorMessage ? 'visible' : 'invisible'].join(' ')}>*The user exists, try a different name</span>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
@@ -104,6 +104,7 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
+                                disabled={!isFilled}
                             >
                                 Sign Up
                             </Button>
@@ -121,7 +122,6 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
             </div>
         );
     }
-
     onRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -130,7 +130,15 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
         register(firstName, lastName, password, userName)
 
     }
-
+    canBeRegister() {
+        const { firstName, lastName, password, userName } = this.state
+        return (
+            firstName.length > 0 &&
+            lastName.length > 0 &&
+            password.length > 0 &&
+            userName.length > 0
+        );
+    }
 
     handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
@@ -138,13 +146,11 @@ class _Register extends React.Component<IRegisterProps, IRegisterState> {
     }
 }
 
-
-
 const mapStateToProps = (state: IState) => {
     return {
-        isLogged:state.isLogged
-    };
-
+        isLogged: state.isLogged,
+        errorMessage: state.errorMessage !== "",
+    }
 }
 
 const mapDispatchToProps = {

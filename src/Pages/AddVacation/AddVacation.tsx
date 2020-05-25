@@ -16,7 +16,7 @@ import { Redirect } from 'react-router';
 
 export interface IAddVacationProps {
     addVacationSuccess: boolean,
-    isLogged:boolean,
+    isLogged: boolean,
     resetVacationSuccess(): void,
     addVacation(description: string, destination: string, image: string, startDate: string, endDate: string, price: number): Promise<boolean>,
 }
@@ -53,7 +53,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     public render() {
-        const { addVacationSuccess,isLogged } = this.props;
+        const { addVacationSuccess, isLogged } = this.props;
         const { description, destination, endDate, image, price, startDate } = this.state;
         const isEnabled = this.canBeSubmitted()
         if (!isLogged) {
@@ -129,6 +129,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 
         const result = await addVacation(description, destination, image, startDate, endDate, price);
 
+
         if (result) {
             this.setState(
                 this.initialState
@@ -138,12 +139,14 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
     }
 
     canBeSubmitted() {
-        const { price, destination, image, description } = this.state;
+        const { price, destination, image, description, startDate, endDate } = this.state;
         return (
             price > 0 &&
             destination.length > 0 &&
             image.length > 0 &&
-            description.length > 0
+            description.length > 0 &&
+            startDate.length > 0 &&
+            endDate.length > 0
         );
     }
 
@@ -152,7 +155,7 @@ class _AddVacation extends React.Component<IAddVacationProps, IAddVacationState>
 const mapStateToProps = (state: IState) => {
     return {
         addVacationSuccess: state.addVacationSuccess,
-        isLogged:state.isLogged
+        isLogged: state.isLogged
     }
 }
 
