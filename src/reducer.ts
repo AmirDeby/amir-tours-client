@@ -37,15 +37,13 @@ export enum ActionType {
     UnFollow = "UNFOLLOW",
     AddVacation = "ADD_VACATION",
     AddVacationFail = "ADD_VACATION_FAIL",
-    Delet
-    eVacation = "DELETE_VACATION",
+    DeleteVacation = "DELETE_VACATION",
     OpenEdit = "OPEN_EDIT",
     CloseEdit = "CLOSE_EDIT",
     EditVacationSuccess = "EDIT_VACATION_SUCCESS",
     EditVacationFail = "EDIT_VACATION_FAIL",
     ResetVacationSuccess = "RESET_VACATION_SUCCESS",
     ResetErrorMessage = "RESET_ERROR_MESSAGE",
-
 }
 
 export const reducer = (state = initialState, action: IAction): IState => {
